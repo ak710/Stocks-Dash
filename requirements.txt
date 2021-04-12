@@ -2,6 +2,6 @@ wealthsimple-trade-python
 streamlit
 yfinance
 pandas
-matplotlib
+matplotlib.pyplot
 numpy
 ta
