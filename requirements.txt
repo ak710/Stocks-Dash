@@ -1,4 +1,4 @@
-wealthsimple
+wealthsimple-trade-python
 streamlit
 yfinance
 pandas
