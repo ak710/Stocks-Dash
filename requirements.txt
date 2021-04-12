@@ -1,3 +1,4 @@
+wealthsimple
 streamlit
 yfinance
 pandas
