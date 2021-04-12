@@ -137,107 +137,107 @@ if screen == "Fundamentals":
     st.line_chart(data=df['Close'], width=0, height=0, use_container_width=True)
 
 
-# if screen == "Wealthsimple":
-#     email = st.text_input("Enter Email")
-#     password = st.text_input("Enter Password",type="password")
-#     tfa = st.text_input("Enter 2FA code:")
+if screen == "Wealthsimple":
+    email = st.text_input("Enter Email")
+    password = st.text_input("Enter Password",type="password")
+    tfa = st.text_input("Enter 2FA code:")
 
-#     try:
-#         def my_two_factor_function():
-#             MFACode = tfa
-#             return MFACode
+    try:
+        def my_two_factor_function():
+            MFACode = tfa
+            return MFACode
 
-#         ws = wealthsimple.WSTrade(
-#             email,
-#             password,
-#             two_factor_callback=my_two_factor_function,
-#         )
-#     except:
-#         pass
-#     else:
-#         st.header("Wealthsimple info")
-#         st.subheader("Positions")
-#         #st.write(ws.get_account_ids())
-#         #st.write(ws.get_account("tfsa-gjcsjvzu"))
+        ws = wealthsimple.WSTrade(
+            email,
+            password,
+            two_factor_callback=my_two_factor_function,
+        )
+    except:
+        pass
+    else:
+        st.header("Wealthsimple info")
+        st.subheader("Positions")
+        #st.write(ws.get_account_ids())
+        #st.write(ws.get_account("tfsa-gjcsjvzu"))
 
-#         positions = ws.get_positions("tfsa-gjcsjvzu")
-#         # st.write(positions[0])
+        positions = ws.get_positions("tfsa-gjcsjvzu")
+        # st.write(positions[0])
 
-#         stock_vals = {}
-#         stock_name = []
-#         symbols = []
-#         avg_daily_vol = []
-#         stock_country = []
-#         exchange = []
-#         old_value = []
-#         currency = []
-#         quantity = []
-#         closing_price = []
-#         daily_high = []
-#         daily_low = []
-#         daily_vol = []
+        stock_vals = {}
+        stock_name = []
+        symbols = []
+        avg_daily_vol = []
+        stock_country = []
+        exchange = []
+        old_value = []
+        currency = []
+        quantity = []
+        closing_price = []
+        daily_high = []
+        daily_low = []
+        daily_vol = []
 
-#         for i in range(len(positions)):
-#             stock_name.append(positions[i]['stock']['name'])
-#             symbols.append(positions[i]['stock']['symbol'])
-#             stock_country.append(positions[i]['stock']['country_of_issue'])
-#             exchange.append(positions[i]['stock']['primary_exchange'])
-#             currency.append(positions[i]['market_book_value']['currency'])
-#             old_value.append(positions[i]['market_book_value']['amount'])
-#             quantity.append(float(positions[i]['quantity']))
-#             closing_price.append(float(positions[i]['quote']['amount']))
-#             daily_high.append(positions[i]['quote']['high'])
-#             daily_low.append(positions[i]['quote']['low'])
-#             avg_daily_vol.append(positions[i]['stock']['avg_daily_volume_last_month'])
-#             daily_vol.append(positions[i]['quote']['volume'])
+        for i in range(len(positions)):
+            stock_name.append(positions[i]['stock']['name'])
+            symbols.append(positions[i]['stock']['symbol'])
+            stock_country.append(positions[i]['stock']['country_of_issue'])
+            exchange.append(positions[i]['stock']['primary_exchange'])
+            currency.append(positions[i]['market_book_value']['currency'])
+            old_value.append(positions[i]['market_book_value']['amount'])
+            quantity.append(float(positions[i]['quantity']))
+            closing_price.append(float(positions[i]['quote']['amount']))
+            daily_high.append(positions[i]['quote']['high'])
+            daily_low.append(positions[i]['quote']['low'])
+            avg_daily_vol.append(positions[i]['stock']['avg_daily_volume_last_month'])
+            daily_vol.append(positions[i]['quote']['volume'])
 
-#         today_value = []
-#         for num1, num2 in zip(quantity, closing_price):
-#     	    today_value.append(num1 * num2)
+        today_value = []
+        for num1, num2 in zip(quantity, closing_price):
+    	    today_value.append(num1 * num2)
 
 
-#         stock_vals["Name"] = stock_name
-#         stock_vals["Symbol"] = symbols
-#         stock_vals["Country"] = stock_country
-#         stock_vals["Exchange"] = exchange
-#         stock_vals["Currency"] = currency
-#         stock_vals["Value At Buy"] = old_value
-#         stock_vals["Value Today"] = today_value
-#         stock_vals["Quantity"] = quantity
-#         stock_vals["Closing Price"] = closing_price
-#         stock_vals["Daily High"] = daily_high
-#         stock_vals["Daily Low"] = daily_low
-#         stock_vals["Average Daily Volume"] = avg_daily_vol
-#         stock_vals["Daily Volume"] = daily_vol
+        stock_vals["Name"] = stock_name
+        stock_vals["Symbol"] = symbols
+        stock_vals["Country"] = stock_country
+        stock_vals["Exchange"] = exchange
+        stock_vals["Currency"] = currency
+        stock_vals["Value At Buy"] = old_value
+        stock_vals["Value Today"] = today_value
+        stock_vals["Quantity"] = quantity
+        stock_vals["Closing Price"] = closing_price
+        stock_vals["Daily High"] = daily_high
+        stock_vals["Daily Low"] = daily_low
+        stock_vals["Average Daily Volume"] = avg_daily_vol
+        stock_vals["Daily Volume"] = daily_vol
 
-#         portfolio = pd.DataFrame(stock_vals)
-#         st.write(portfolio)
+        portfolio = pd.DataFrame(stock_vals)
+        st.write(portfolio)
 
-#         st.subheader("Portfolio Breakdown")
-#         # show_chart = st.selectbox("select stock", symbols)
-#         fig, ax = plt.subplots()
-#         ax = plt.pie(today_value, labels = symbols, autopct='%1.1f%%')
-#         st.pyplot(fig)
+        st.subheader("Portfolio Breakdown")
+        # show_chart = st.selectbox("select stock", symbols)
+        fig, ax = plt.subplots()
+        ax = plt.pie(today_value, labels = symbols, autopct='%1.1f%%')
+        st.pyplot(fig)
 
-#         # st.write("Deposits")
-#         # st.write(ws.get_deposits())
-#         st.header("History")
-#         portfolio_amount = {}
-#         history = []
-#         dates = []
-#         historical_vals = ws.get_account_history("tfsa-gjcsjvzu")["results"]
-#         for i in range(len(historical_vals)):
-#             history.append(historical_vals[i]["value"]['amount'])
-#             dates.append(historical_vals[i]["date"])
+        # st.write("Deposits")
+        # st.write(ws.get_deposits())
+        st.header("History")
+        portfolio_amount = {}
+        history = []
+        dates = []
+        historical_vals = ws.get_account_history("tfsa-gjcsjvzu")["results"]
+        for i in range(len(historical_vals)):
+            history.append(historical_vals[i]["value"]['amount'])
+            dates.append(historical_vals[i]["date"])
 
-#         portfolio_amount["Date"] = dates
-#         portfolio_amount["Value"] = history
+        portfolio_amount["Date"] = dates
+        portfolio_amount["Value"] = history
         
-#         performance = pd.DataFrame(portfolio_amount)
-#         # st.write(performance)
-#         st.line_chart(data=performance, width=0, height=0, use_container_width=True)
-#         # st.write("Get activities")
-#         # st.write(ws.get_activities())
+        performance = pd.DataFrame(portfolio_amount)
+        # st.write(performance)
+        st.line_chart(data=performance, width=0, height=0, use_container_width=True)
+        # st.write("Get activities")
+        # st.write(ws.get_activities())
 
 if screen == "Stock Compare":
     col1,col2,col3,col4,col5 = st.beta_columns(5)
