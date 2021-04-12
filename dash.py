@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import ta
+import backtrader as bt
 
 def format_number(number):
     return f"{number:,}"
@@ -227,8 +228,9 @@ if screen == "Wealthsimple":
         dates = []
         historical_vals = ws.get_account_history("tfsa-gjcsjvzu")["results"]
         for i in range(len(historical_vals)):
-            history.append(historical_vals[i]["value"]['amount'])
             dates.append(historical_vals[i]["date"])
+            history.append(historical_vals[i]["value"]['amount'])
+
 
         portfolio_amount["Date"] = dates
         portfolio_amount["Value"] = history
@@ -262,6 +264,32 @@ if screen == "Stock Compare":
     # df = pd.DataFrame(ticker.history(period=time_period,interval=interval))
     # st.line_chart(data=df['Close'], width=0, height=0, use_container_width=True)
 
-# if screen == "Technical Analysis":
+if screen == "Technical Analysis":
+    stock = yf.Ticker("SPY")
+    stock_data = stock.history(period="4y")
 
-    
+    # print(stock_data.head())
+
+
+    class SMA200Strategy(bt.Strategy):
+        def __init__(self):
+            self.etf = self.datas[0]
+            self.etf_sma = bt.ind.SMA(self.etf.lines.close, period=200)
+            self.crossover = bt.ind.CrossOver(self.etf, self.etf_sma)
+
+        def next(self):
+            if self.crossover > 0:
+                self.order_target_percent(self.etf, target=0.9)
+            elif self.crossover < 0:
+                self.order_target_percent(self.etf, target=0)
+
+
+    cerebro = bt.Cerebro()
+
+    cerebro.broker.setcash(100000)
+    cerebro.adddata(
+        bt.feeds.PandasData(dataname=stock_data))
+    cerebro.addstrategy(SMA200Strategy)
+
+    cerebro.run()
+    cerebro.plot()
